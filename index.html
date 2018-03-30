@@ -5,25 +5,25 @@
 <link rel="stylesheet" href="style.css">
 
 <script type="text/javascript">
-  //Need at least 1 value
-  var categoryNames = [
-    "Bits",
-    "Donations",
-    "Subscription"
-  ];
+  let displayData = new Map([Map]);
 
-  var names = [
-    ["AceEbb","DaviDeil","Gromfalloon","NobodySgt","NotNobodySgt","Protokitty","Sambo140","Substylee"], //bits
-    ["Gromfalloon"], //donators
-    ["NobodySgt","DaviDeil","Mazimov","phunqsauce","Beerfullofbelly","angrylanks","Tarbash","chrisHgames","Backslash","CantFindBombs","rufford","Gromfalloon","NobodySgt"] //subscribers
-  ];
+  let thanksMap = new Map([Array]);
+  thanksMap.set("Bits", ["AceEbb","DaviDeil","Gromfalloon","NobodySgt","NotNobodySgt","Protokitty","Sambo140","Substylee"]);
+  thanksMap.set("Donation", ["Gromfalloon"]);
+  thanksMap.set("Subcription", ["DaviDeil","Mazimov","phunqsauce","Beerfullofbelly","angrylanks","Tarbash","chrisHgames","Backslash","CantFindBombs","rufford","Gromfalloon","NobodySgt"]);
+  displayData.set("Thanks for the", thanksMap);
+
+  //Need at least 1 value
+  let categoryMap = displayData.get("Thanks for the");
+  let categoryNames = [...categoryMap.keys()];
+  let names = categoryMap.get(categoryNames[1]);
 
   var id = 'frontName';
-  var currentIndex = 0; //Need mod for length 1 case
+  var currentIndex = 1; //Need mod for length 1 case
 
   function nextName() {
     currentIndex++;
-    if(currentIndex == names[currentCategory].length) {
+    if(currentIndex == names.length) {
       currentIndex = 0;
       flipCategory();
     }
@@ -35,17 +35,19 @@
     id = (nextFront) ? 'backName' : 'frontName';
 
     //Note this assumes there's only one.
-    document.getElementById(id).innerHTML = names[currentCategory][currentIndex];
+    document.getElementById(id).innerHTML = names[currentIndex];
   }
 
   var categoryId = 'frontCategory';
-  var currentCategory = 0;
+  var currentCategory = 1;
 
   function flipCategory() {
     currentCategory++;
     if(currentCategory == categoryNames.length) {
-      currentCategory = 0;
+      currentCategory = 1;
     }
+
+    names = categoryMap.get(categoryNames[currentCategory]);
 
     var card = document.getElementById('categoryCard');
     card.toggleClassName('flipped');
@@ -57,11 +59,11 @@
     document.getElementById(categoryId).innerHTML = categoryNames[currentCategory];
   }
 
-  window.setInterval(nextName, 5000);
+  window.setInterval(nextName, 1500);
 </script>
 
 </head>
-<body> <!-- background="http://www.neshq.com/games/m/metroid/1024x768-action.gif"-->
+<body>
   <div class="container">
     <div class="card">
       <div>Thanks for the </div>
@@ -83,8 +85,8 @@
 </div>
 <script type="text/javascript">
   var init = function() {
-    document.getElementById('frontName').innerHTML = names[0][0];
-    document.getElementById('frontCategory').innerHTML = categoryNames[0];
+    document.getElementById('frontName').innerHTML = names[0];
+    document.getElementById('frontCategory').innerHTML = categoryNames[1];
   };
 
   window.addEventListener('DOMContentLoaded', init(), false);

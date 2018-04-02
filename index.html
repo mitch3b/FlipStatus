@@ -6,15 +6,25 @@
 
 <script type="text/javascript">
   let displayData = new Map([Map]);
+  loadData();
 
-  let thanksMap = new Map([Array]);
-  thanksMap.set("Bits", ["AceEbb","DaviDeil","Gromfalloon","NobodySgt","NotNobodySgt","Protokitty","Sambo140","Substylee"]);
-  thanksMap.set("Donation", ["Gromfalloon"]);
-  thanksMap.set("Subcription", ["DaviDeil","Mazimov","phunqsauce","Beerfullofbelly","angrylanks","Tarbash","chrisHgames","Backslash","CantFindBombs","rufford","Gromfalloon","NobodySgt"]);
-  displayData.set("Thanks for the", thanksMap);
+  function loadData() {
+    let topAlbumsMap = new Map([Array]);
+    topAlbumsMap.set("Pink Floyd", ["Dark Side of the Moon","The Wall","Wish You Were Here"]);
+    topAlbumsMap.set("Neutral Milk Hotel", ["Aeroplane over the Sea"]);
+    topAlbumsMap.set("Beatles", ["Abbey Road","Let it Be","White Album"]);
+    displayData.set("Best Albums by", topAlbumsMap);
+
+    let thanksMap = new Map([Array]);
+    thanksMap.set("Bits", ["AceEbb","DaviDeil","Gromfalloon","NobodySgt","NotNobodySgt","Protokitty","Sambo140","Substylee"]);
+    thanksMap.set("Donation", ["Gromfalloon"]);
+    thanksMap.set("Subcription", ["DaviDeil","Mazimov","phunqsauce","Beerfullofbelly","angrylanks","Tarbash","chrisHgames","Backslash","CantFindBombs","rufford","Gromfalloon","NobodySgt"]);
+    displayData.set("Thanks for the", thanksMap);
+  }
 
   //Need at least 1 value
-  let categoryMap = displayData.get("Thanks for the");
+  let subjects = [...displayData.keys()]
+  let categoryMap = displayData.get(subjects[1]);
   let categoryNames = [...categoryMap.keys()];
   let names = categoryMap.get(categoryNames[1]);
 
@@ -45,6 +55,7 @@
     currentCategory++;
     if(currentCategory == categoryNames.length) {
       currentCategory = 1;
+      flipSubject();
     }
 
     names = categoryMap.get(categoryNames[currentCategory]);
@@ -59,26 +70,49 @@
     document.getElementById(categoryId).innerHTML = categoryNames[currentCategory];
   }
 
+  var subjectId = 'frontSubject';
+  var currentSubject = 1;
+  function flipSubject() {
+    currentSubject++;
+    if(currentSubject == subjects.length) {
+      currentSubject = 1;
+    }
+
+    names = categoryMap.get(categoryNames[currentCategory]);
+    categoryMap = displayData.get(subjects[currentSubject]);
+    categoryNames = [...categoryMap.keys()];
+
+    var card = document.getElementById('subjectCard');
+    card.toggleClassName('flipped');
+
+    var nextFront = (subjectId == 'frontSubject');
+    subjectId = (nextFront) ? 'backSubject' : 'frontSubject';
+
+    //Note this assumes there's only one.
+    document.getElementById(subjectId).innerHTML = subjects[currentSubject];
+  }
+
   window.setInterval(nextName, 1500);
 </script>
 
 </head>
 <body>
   <div class="container">
-    <div class="card">
-      <div>Thanks for the </div>
+    <div class="card" id="subjectCard">
+      <div class="front" id="frontSubject">SHOULD NOT SEE THIS EVER</div>
+      <div class="back" id="backSubject">SHOULD NOT SEE THIS EVER</div>
     </div>
   </div>
   <div class="container">
     <div class="card" id="categoryCard">
-      <div class="front" id="frontCategory">This</div>
-      <div class="back" id="backCategory">That</div>
+      <div class="front" id="frontCategory">SHOULD NOT SEE THIS EVER</div>
+      <div class="back" id="backCategory">SHOULD NOT SEE THIS EVER</div>
     </div>
   </div>
   <div class="container">
     <div class="card" id="nameCard">
-      <div class="front" id="frontName">1</div>
-      <div class="back" id="backName">2</div>
+      <div class="front" id="frontName">SHOULD NOT SEE THIS EVER</div>
+      <div class="back" id="backName">SHOULD NOT SEE THIS EVER</div>
     </div>
   </div>
   <!--button id="flip">Flip Card</button-->
@@ -87,6 +121,7 @@
   var init = function() {
     document.getElementById('frontName').innerHTML = names[0];
     document.getElementById('frontCategory').innerHTML = categoryNames[1];
+    document.getElementById('frontSubject').innerHTML = [...displayData.keys()][1];
   };
 
   window.addEventListener('DOMContentLoaded', init(), false);

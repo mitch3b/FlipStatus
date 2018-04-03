@@ -6,20 +6,94 @@
 
 <script type="text/javascript">
   let displayData = new Map([Map]);
-  loadData();
 
-  function loadData() {
-    let topAlbumsMap = new Map([Array]);
-    topAlbumsMap.set("Pink Floyd", ["Dark Side of the Moon","The Wall","Wish You Were Here"]);
-    topAlbumsMap.set("Neutral Milk Hotel", ["Aeroplane over the Sea"]);
-    topAlbumsMap.set("Beatles", ["Abbey Road","Let it Be","White Album"]);
-    displayData.set("Best Albums by", topAlbumsMap);
+  var hardCodedData = [
+  "Top	Metroid	Runs",
+  "Any%	MetroidMcFly	10m 13s",
+  "	mitch3a	11m 07s",
+  "	Mazimov	11m 30s",
+  "All Boss	MetroidMcFly	14m 41s",
+  "	mitch3a	16m 29s",
+  "	Mazimov	16m 37s",
+  "100%	Dragondarch	39m 12s",
+  "	Mazimov	42m 47s",
+  "	BreadForBrunch	43m 55s",
+  "Any% Deathless	MetroidMcFly	11m 35s",
+  "	Garrison	12m 33s",
+  "	mitch3a	13 28s",
+  "All Bosses Deathless	MetroidMcFly	18m 41s",
+  "	mitch3a	20m 16s",
+  "	dookel	21m 53s",
+  "100% Deathless	Dragondarch	44m 26s",
+  "	BreadForBrunch	46m 23s",
+  "	Koh1fds	46m 38s",
+  "No Mini Bosses	mitch3a	15m 31s",
+  "	TheTycon	17m 26s",
+  "Fake Kraid RTA	AceEbb	2m 40s",
+  "	Mazimov	2m 41s",
+  "	EclipseMT	5m 19s",
+  "Special Thanks to	Metroid Mods	Mr_Shasta",
+  "		corey042",
+  "		controllerhead",
+  "		Dragondarch",
+  "		MetroidMcFly",
+  "		AceEbb",
+    "	Emote Drawer	gromfalloon"];
+  loadData(hardCodedData);
+  /* TODO loading from a file won't work without special casing it. Figure something else out.
+  getFile();
+
+  var file = "file:/Users/mitchken/Documents/NesDev/FlipStatus/data.txt";
+  function getFile(){
+      $.get(file,function(txt){
+          var lines = txt.responseText.split("\n");
+          loadData(lines);
+      });
+  }
+ */
+
+  function loadData(data) {
+
+    var subject = "";
+    var category = "";
+    var value = "";
+    for(var i = 0 ; i < data.length ; ++i) {
+      var lines = data[i].split("\t")
+      if(lines.length != 3) {
+        printf("COULD NOT PARSE LINE: " + data[i]);
+      }
+      else {
+        if(lines[0].trim() != "") {
+          subject = lines[0];
+        }
+        if(lines[1].trim() != "") {
+          category = lines[1];
+        }
+
+        value = lines[2];
+
+        var categoryMap = displayData.get(subject);
+        if(categoryMap == null) {
+          categoryMap = new Map([Array]);
+          displayData.set(subject, categoryMap);
+        }
+
+        var values = categoryMap.get(category);
+        if(values == null) {
+          values = [];
+          categoryMap.set(category, values);
+        }
+
+        values.push(value);
+      }
+    }
 
     let thanksMap = new Map([Array]);
     thanksMap.set("Bits", ["AceEbb","DaviDeil","Gromfalloon","NobodySgt","NotNobodySgt","Protokitty","Sambo140","Substylee"]);
     thanksMap.set("Donation", ["Gromfalloon"]);
     thanksMap.set("Subcription", ["DaviDeil","Mazimov","phunqsauce","Beerfullofbelly","angrylanks","Tarbash","chrisHgames","Backslash","CantFindBombs","rufford","Gromfalloon","NobodySgt"]);
     displayData.set("Thanks for the", thanksMap);
+
   }
 
   //Need at least 1 value
@@ -29,7 +103,7 @@
   let names = categoryMap.get(categoryNames[1]);
 
   var id = 'frontName';
-  var currentIndex = 1; //Need mod for length 1 case
+  var currentIndex = 0; //Need mod for length 1 case
 
   function nextName() {
     currentIndex++;
@@ -92,7 +166,7 @@
     document.getElementById(subjectId).innerHTML = subjects[currentSubject];
   }
 
-  window.setInterval(nextName, 1500);
+  window.setInterval(nextName, 5000);
 </script>
 
 </head>
